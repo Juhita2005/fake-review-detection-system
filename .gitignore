@@ -1,36 +1,87 @@
 # Python
 __pycache__/
 *.pyc
-
-# Virtual env
-venv/
-env/
-
-# ML models
-*.bin
-*.pt
-*.pth
-*.safetensors
-model/
-models/
-
-# Huggingface cache
-.cache/
-
-# SQLite
+*.pyo
+*.pyd
+*.sqlite3
 *.db
 
-# Datasets
-*.csv
+# Virtual Environment
+venv/
+env/
+.venv/
 
-# Node
-frontend/node_modules/
+# Python packages
+*.egg-info/
+dist/
+build/
 
-# React build
-frontend/build/
+# Node modules
+node_modules/
+
+# Vite
+dist/
+.vite/
 
 # Logs
 *.log
+
+# Environment variables
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# ML model checkpoints
+runs/
+models/results/
+
+# Large datasets
+*.csv
+*.zip
+*.pt
+*.pth
+
+# SQLite database
+reviews.db
+# # Python
+# __pycache__/
+# *.pyc
+
+# # Virtual env
+# venv/
+# env/
+
+# # ML models
+# *.bin
+# *.pt
+# *.pth
+# *.safetensors
+# model/
+# models/
+
+# # Huggingface cache
+# .cache/
+
+# # SQLite
+# *.db
+
+# # Datasets
+# *.csv
+
+# # Node
+# frontend/node_modules/
+
+# # React build
+# frontend/build/
+
+# # Logs
+# *.log
 # # Python
 # __pycache__/
 # *.pyc

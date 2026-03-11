@@ -235,19 +235,26 @@ This database stores:
 SQLite file is created automatically when the backend runs.
 
 ---
+Export Options
 
-# Future Improvements
+The admin dashboard supports:
 
-Possible enhancements:
+CSV export of review logs
 
-- Dark mode dashboard
-- User authentication
-- Admin moderation panel
-- Fake review trend analytics
-- Model retraining interface
-- Cloud database integration
+PDF report export using browser print
 
----
+Future Improvements
+
+Real authentication system
+
+User accounts
+
+Cloud database (PostgreSQL)
+
+Model explainability (SHAP/LIME)
+
+Deployment with Docker
+
 
 # Author
 
