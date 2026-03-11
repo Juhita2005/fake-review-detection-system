@@ -46,6 +46,7 @@ models/results/
 *.zip
 *.pt
 *.pth
+*.pkl
 
 # SQLite database
 reviews.db
