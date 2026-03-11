@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+env/
+
+# ML models
+*.bin
+*.pt
+*.pth
+*.safetensors
+model/
+models/
+
+# Huggingface cache
+.cache/
+
+# SQLite
+*.db
+
+# Datasets
+*.csv
+
+# Node
+frontend/node_modules/
+
+# React build
+frontend/build/
+
+# Logs
+*.log
+# # Python
+# __pycache__/
+# *.pyc
+# *.pyo
+# *.pyd
+
+# # Environment
+# venv/
+# .env
+
+
+# # OS files
+# .DS_Store
+# Thumbs.db
+
+# # Node
+# node_modules/
+
+# # Logs
+# *.log
