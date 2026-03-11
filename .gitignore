@@ -38,15 +38,15 @@ Thumbs.db
 .idea/
 
 # ML model checkpoints
-runs/
-models/results/
+# runs/
+# models/results/
 
 # Large datasets
 *.csv
 *.zip
-*.pt
-*.pth
-*.pkl
+# *.pt
+# *.pth
+# *.pkl
 
 # SQLite database
 reviews.db
