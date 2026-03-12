@@ -11,6 +11,34 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from ml.predict import predict_review
 
+def generate_explanations(review, fake_prob, genuine_prob):
+    
+    explanations = []
+
+    review_lower = review.lower()
+
+    # Short review detection
+    if len(review.split()) < 6:
+        explanations.append("Review is very short and lacks detailed feedback")
+
+    # Promotional language detection
+    promotional_words = ["amazing", "perfect", "best", "must buy", "incredible", "awesome"]
+    if any(word in review_lower for word in promotional_words):
+        explanations.append("Contains overly promotional language")
+
+    # Fake probability logic
+    if fake_prob > 0.7:
+        explanations.append("Language pattern similar to known fake reviews")
+
+    # Genuine probability logic
+    if genuine_prob > 0.7:
+        explanations.append("Balanced and natural wording detected")
+
+    if not explanations:
+        explanations.append("Prediction generated using trained NLP model patterns")
+
+    return explanations
+
 app = FastAPI(title="Fake Review Detection API")
 
 app.add_middleware(
@@ -25,11 +53,19 @@ app.add_middleware(
 @app.get("/")
 def home():
     return {"message": "Fake Review Detection API Running"}
+    
 
 @app.post("/detect-review")
-def detect_review(review: str):
+def detect_review(review: str, category: str = "General"):
 
     result = predict_review(review)
+
+    fake_prob = result["fake_probability"]
+    genuine_prob = result["genuine_probability"]
+
+    explanations = generate_explanations(review, fake_prob, genuine_prob)
+
+    result["explanations"] = explanations
 
     # save to database
     db = SessionLocal()
@@ -37,7 +73,8 @@ def detect_review(review: str):
     log = ReviewLog(
         review_text=review,
         prediction=result["prediction"],
-        fake_probability=result["fake_probability"]
+        fake_probability=result["fake_probability"],
+        category=category
     )
 
     db.add(log)
@@ -62,6 +99,11 @@ async def analyze_csv(file: UploadFile = File(...)):
 
     for review in df["text"]:
         prediction = predict_review(review)
+
+        fake_prob = prediction["fake_probability"]
+        genuine_prob = prediction["genuine_probability"]
+
+        prediction["explanations"] = generate_explanations(review, fake_prob, genuine_prob)
 
         log = ReviewLog(
           review_text=review,
@@ -110,4 +152,30 @@ def get_review_logs():
             "fake_probability": log.fake_probability
         }
         for log in logs
+    ]
+
+@app.get("/fake-review-categories")
+def fake_review_categories():
+
+    db = SessionLocal()
+
+    logs = db.query(ReviewLog).all()
+
+    db.close()
+
+    category_counts = {}
+
+    for log in logs:
+        if log.prediction == "Fake Review":
+
+            category = log.category or "General"
+
+            if category not in category_counts:
+                category_counts[category] = 0
+
+            category_counts[category] += 1
+
+    return [
+        {"category": k, "count": v}
+        for k, v in category_counts.items()
     ]

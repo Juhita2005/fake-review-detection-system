@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Shield, LogIn } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
@@ -24,7 +25,20 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
+      <Link
+        to="/"
+        className="absolute top-6 left-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Home
+      </Link>
+      {/* <Link
+         to="/"
+         className="absolute top-6 left-6 text-sm text-muted-foreground hover:text-primary transition"
+      >
+         ← Back to Home
+      </Link> */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

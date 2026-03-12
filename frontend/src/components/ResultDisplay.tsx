@@ -5,6 +5,8 @@ import type { DetectionResult } from "@/lib/api";
 
 interface Props {
   result: DetectionResult;
+  
+  
 }
 
 export function ResultDisplay({ result }: Props) {
@@ -13,6 +15,7 @@ export function ResultDisplay({ result }: Props) {
     { name: "Fake", value: +(result.fake_probability * 100).toFixed(1) },
     { name: "Genuine", value: +(result.genuine_probability * 100).toFixed(1) },
   ];
+  const trustScore = Math.round(result.genuine_probability * 100);
 
   return (
     <motion.div
@@ -20,7 +23,7 @@ export function ResultDisplay({ result }: Props) {
       animate={{ opacity: 1, scale: 1 }}
       className="glass-card p-6 mt-6"
     >
-      <div className="flex flex-col md:flex-row items-center gap-6">
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-6 flex-wrap">
         {/* Badge */}
         <div className="flex flex-col items-center gap-3">
           <div className={`rounded-full p-4 ${isFake ? "bg-destructive/10" : "bg-success/10"}`}>
@@ -39,11 +42,13 @@ export function ResultDisplay({ result }: Props) {
         </div>
 
         {/* Chart */}
-        <div className="w-48 h-48">
+        <div className="w-full max-w-[200px] h-[200px]">
           <ResponsiveContainer>
             <PieChart>
               <Pie
                 data={data}
+                isAnimationActive={true}
+                animationDuration={900}
                 cx="50%"
                 cy="50%"
                 innerRadius={50}
@@ -80,6 +85,46 @@ export function ResultDisplay({ result }: Props) {
             <span className="font-mono font-semibold">{(result.genuine_probability * 100).toFixed(1)}%</span>
           </div>
         </div>
+        {/* Trust Score */}
+        <div className="w-full mt-4">
+          <div className="flex justify-between text-xs text-muted-foreground mb-1">
+            <span>Trust Score</span>
+            <span className="font-semibold">{trustScore}/100</span>
+          </div>
+
+          <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+            <div
+              className={`h-full ${
+                trustScore > 70
+                  ? "bg-success"
+                  : trustScore > 40
+                  ? "bg-yellow-500"
+                  : "bg-destructive"
+            }`}
+            style={{ width: `${trustScore}%` }}
+          />
+        </div>
+      </div>
+      {/* AI Explanation */}
+      <div className="mt-4 text-xs text-muted-foreground w-full">
+        <p className="font-semibold text-foreground mb-2">AI Analysis</p>
+
+        <ul className="list-disc list-inside space-y-1">
+          {result.fake_probability > 0.7 && (
+            <li>High probability of promotional or spam-like wording</li>
+          )}
+
+          {result.fake_probability > 0.5 && (
+            <li>Language pattern similar to known fake reviews</li>
+          )}
+
+          {result.genuine_probability > 0.7 && (
+            <li>Balanced and natural review structure detected</li>
+          )}
+
+          <li>Prediction generated using trained NLP model</li>
+        </ul>
+      </div>
       </div>
     </motion.div>
   );

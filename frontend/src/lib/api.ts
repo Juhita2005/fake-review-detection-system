@@ -10,6 +10,7 @@ export interface DetectionResult {
   prediction: string;
   fake_probability: number;
   genuine_probability: number;
+  explanations: string[];
 }
 
 export interface CsvAnalysisResult {
@@ -43,5 +44,15 @@ export async function analyzeCsv(file: File): Promise<CsvAnalysisResult> {
 
 export async function getReviewLogs(): Promise<ReviewLog[]> {
   const { data } = await api.get("/review-logs");
+  return data;
+}
+
+export interface CategoryFakeCount {
+  category: string;
+  count: number;
+}
+
+export async function getFakeReviewCategories(): Promise<CategoryFakeCount[]> {
+  const { data } = await api.get("/fake-review-categories");
   return data;
 }

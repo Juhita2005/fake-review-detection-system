@@ -9,6 +9,8 @@ import {
   PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
   AreaChart, Area,
 } from "recharts";
+// import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { getFakeReviewCategories } from "@/lib/api";
 
 const chartTooltipStyle = {
   background: "hsl(225, 14%, 10%)",
@@ -20,12 +22,17 @@ const chartTooltipStyle = {
 export default function AdminDashboard() {
   const [logs, setLogs] = useState<ReviewLog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categoryData, setCategoryData] = useState<any[]>([]);
 
   useEffect(() => {
     getReviewLogs()
       .then(setLogs)
       .catch(() => {})
       .finally(() => setLoading(false));
+
+    getFakeReviewCategories()
+      .then(setCategoryData)
+      .catch(() => {});
   }, []);
 
   const fakeCount = logs.filter((l) => l.prediction === "Fake Review").length;
@@ -95,6 +102,20 @@ export default function AdminDashboard() {
                   </PieChart>
                 </ResponsiveContainer>
               </div>
+              <div className="glass-card p-6">
+                <h3 className="font-semibold mb-4">Fake Reviews by Category</h3>
+                <div className="h-64">
+                  <ResponsiveContainer>
+                    <BarChart data={categoryData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(225, 12%, 16%)" />
+                      <XAxis dataKey="category" stroke="hsl(215, 12%, 50%)" fontSize={12} />
+                      <YAxis stroke="hsl(215, 12%, 50%)" fontSize={12} />
+                      <Tooltip contentStyle={chartTooltipStyle} />
+                      <Bar dataKey="count" fill="hsl(0, 72%, 51%)" radius={[6,6,0,0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+            </div>
             </div>
 
             <div className="glass-card p-6">

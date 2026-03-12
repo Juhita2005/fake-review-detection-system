@@ -20,6 +20,8 @@ class ReviewLog(Base):
     review_text = Column(String)
     prediction = Column(String)
     fake_probability = Column(Float)
+    category = Column(String, default="General")
+    
 
 
 # create tables automatically
