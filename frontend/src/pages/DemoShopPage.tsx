@@ -39,7 +39,7 @@ function ProductCard({ product }: { product: Product }) {
     }
     setLoading(true);
     try {
-      const res = await detectReview(review.trim());
+      const res = await detectReview(review.trim(), product.category);
       setResult(res);
     } catch {
       toast.error("API connection failed.");

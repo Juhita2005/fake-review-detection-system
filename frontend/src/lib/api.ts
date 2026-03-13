@@ -26,10 +26,18 @@ export interface ReviewLog {
   review_text: string;
   prediction: string;
   fake_probability: number;
+  category: string;
 }
 
-export async function detectReview(review: string): Promise<DetectionResult> {
-  const { data } = await api.post(`/detect-review?review=${encodeURIComponent(review)}`);
+export async function detectReview(review: string, category : string): Promise<DetectionResult> {
+  const { data } = await api.post(
+    `/detect-review?review=${encodeURIComponent(review)}&category=${encodeURIComponent(category)}`
+  );
+  // const { data } = await api.post("/detect-review", {
+  //   review: review,
+  //   category: category
+  // });
+  // const { data } = await api.post(`/detect-review?review=${encodeURIComponent(review)}`);
   return data;
 }
 

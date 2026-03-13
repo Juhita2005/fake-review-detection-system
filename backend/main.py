@@ -149,7 +149,8 @@ def get_review_logs():
             "id": log.id,
             "review_text": log.review_text,
             "prediction": log.prediction,
-            "fake_probability": log.fake_probability
+            "fake_probability": log.fake_probability,
+            "category": log.category
         }
         for log in logs
     ]
